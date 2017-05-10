@@ -14,7 +14,7 @@ public class DistrictModel {
 	private DistrictDAO districtDAO;
 	private StreetModel streetModel;
 	public DistrictModel(){
-		districtDAO=new DistrictDAO();
+		districtDAO=DistrictDAO.getInstance();
 		streetModel=new StreetModel();
 	}
 	public List<DistrictBean> getListDistrictByProvinceID(String provinceID){
@@ -27,9 +27,36 @@ public class DistrictModel {
 				while(rs.next()){
 					String id=rs.getString(1);
 					String title=rs.getString(2);
-					int numofStreet=rs.getInt(3);
 					List<StreetBean> listStreet=streetModel.getListStreet(id);
-					DistrictBean district=new DistrictBean(id, title,listStreet,numofStreet,false);
+					if(listStreet==null ||listStreet.size()<=0){
+						listStreet=new ArrayList<>();
+					}
+					DistrictBean district=new DistrictBean(id, title,listStreet,listStreet.size(),false);
+					
+					list.add(district);	
+				}
+			}
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	public List<DistrictBean> getListDistrictByProvinceID_NoStreet(String provinceID){
+		List<DistrictBean> list=new ArrayList<>();
+		
+		try {
+			ResultSet rs=districtDAO.getListDistrictByProvinceID(provinceID);
+			
+			if(rs!=null){
+				while(rs.next()){
+					String id=rs.getString(1);
+					String title=rs.getString(2);
+					
+					DistrictBean district=new DistrictBean(id, title,false);
 					
 					list.add(district);	
 				}

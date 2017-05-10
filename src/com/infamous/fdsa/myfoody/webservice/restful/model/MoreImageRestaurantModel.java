@@ -13,7 +13,7 @@ public class MoreImageRestaurantModel {
 	private MoreImageRestaurantDAO moreImageRestaurantDAO;
 	private String imagePath=AppConfig.IMAGE_PATH_MAIN_PHOTO_RES_LOCAL;
 	public MoreImageRestaurantModel(){
-		this.moreImageRestaurantDAO=new MoreImageRestaurantDAO();
+		this.moreImageRestaurantDAO=MoreImageRestaurantDAO.getInstance();
 	}
 	
 	public List<MoreImageRestaurantBean> getMoreImageRestaurantDAO(String resid,int numofPhoto){

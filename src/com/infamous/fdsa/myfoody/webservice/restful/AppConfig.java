@@ -21,6 +21,7 @@ public class AppConfig {
     public static final String IMAGE_PATH_CATEGORY_LOCAL="category/";
     
     public static final String IMAGE_PATH_USER_AVATAR_LOCAL="avatar/";
+    public static final String IMAGE_PATH_USER_COVER_LOCAL="cover/";
     
     public static final String IMAGE_PATH_MAIN_PHOTO_RES_LOCAL="restaurant/";
     

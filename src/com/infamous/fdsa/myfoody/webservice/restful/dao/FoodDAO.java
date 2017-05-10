@@ -5,15 +5,25 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.PreparedStatement;
 
-public class FoodDAO extends BaseDAO{
-	
-	public FoodDAO(){
+public class FoodDAO extends BaseDAO {
+
+	private FoodDAO() {
 		super();
 	}
-	
-	public ResultSet getListFood(String provinceID,String districtID,String streetID,String resType) throws SQLException{
+
+	protected static FoodDAO instance;
+
+	public synchronized static FoodDAO getInstance() {
+		if (instance == null) {
+			instance = new FoodDAO();
+		}
+		return instance;
+	}
+
+	public ResultSet getListFood(String provinceID, String districtID, String streetID, String resType)
+			throws SQLException {
 		String sql = "call sp_getFood(?,?,?,?)";
-		
+
 		PreparedStatement pre = null;
 		try {
 			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);

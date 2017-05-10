@@ -8,6 +8,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -55,7 +56,43 @@ public class RestaurantController {
 		}
 
 		catch (Exception e) {
-			System.out.println("Exception Error"); // Console
+			e.getMessage();
+			System.out.println("Exception Error4444"); // Console
+			object.addProperty("success", false);
+			object.addProperty("data", "Not found");
+		}
+		return object.toString();
+	}
+	@GET
+	@Path("/restaurant/getbyid/{id}")
+	@Produces("application/json")
+	public String getmenubar(
+			@PathParam("id") String id) {
+
+		JsonObject object = new JsonObject();
+		try {
+			RestaurantModel model = new RestaurantModel();
+			
+			RestaurantBean list = model.getRestaurantById(id);
+
+			Gson gson = new Gson();
+
+			JsonElement data;
+
+			if (list != null) {
+				data = gson.toJsonTree(list);
+				object.addProperty("success", true);
+				object.add("data", data);
+			} else {
+				object.addProperty("success", false);
+				object.addProperty("data", "Not found");
+			}
+
+		}
+
+		catch (Exception e) {
+			e.getStackTrace();
+			System.out.println("Exception Error12312"); // Console
 			object.addProperty("success", false);
 			object.addProperty("data", "Not found");
 		}

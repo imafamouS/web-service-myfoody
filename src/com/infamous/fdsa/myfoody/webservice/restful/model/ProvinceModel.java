@@ -18,7 +18,7 @@ public class ProvinceModel {
 	private DistrictModel districtModel;
 
 	public ProvinceModel(){
-		provinceDAO=new ProvinceDAO();
+		provinceDAO=ProvinceDAO.getInstance();
 		districtModel=new DistrictModel();
 	}
 	

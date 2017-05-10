@@ -8,7 +8,7 @@ public class CommentFoodBean {
 	private UserBean user;
 	
 	public CommentFoodBean(String id, UserBean user, String foodid, String comment) {
-		super();
+		
 		this.id = id;
 		this.user = user;
 		this.foodid = foodid;

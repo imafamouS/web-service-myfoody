@@ -15,7 +15,7 @@ public class MenuBarModel {
 	String imgPath=AppConfig.IMAGE_PATH_CATEGORY_LOCAL;
 	
 	public MenuBarModel(){
-		menuBarDAO=new MenuBarDAO();
+		menuBarDAO=MenuBarDAO.getInstance();
 	}
 	
 	public List<MenuBarBean> getListCategory(String code){

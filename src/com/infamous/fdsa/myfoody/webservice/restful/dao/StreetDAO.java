@@ -6,8 +6,17 @@ import java.sql.SQLException;
 import com.mysql.jdbc.PreparedStatement;
 
 public class StreetDAO extends BaseDAO{
-	public StreetDAO(){
+	private StreetDAO(){
 		super();
+	}
+
+	protected static StreetDAO instance;
+
+	public synchronized static StreetDAO getInstance() {
+		if (instance == null) {
+			instance = new StreetDAO();
+		}
+		return instance;
 	}
 	public ResultSet getListStreet(String districtID) throws SQLException{
 		String sql="";

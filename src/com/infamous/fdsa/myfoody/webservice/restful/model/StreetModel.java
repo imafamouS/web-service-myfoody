@@ -12,7 +12,7 @@ public class StreetModel {
 	private StreetDAO streetDAO;
 	
 	public StreetModel(){
-		streetDAO=new StreetDAO();
+		streetDAO=StreetDAO.getInstance();
 	}
 	
 	public List<StreetBean> getListStreet(String districtID){

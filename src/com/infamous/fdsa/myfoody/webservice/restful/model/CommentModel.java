@@ -14,7 +14,7 @@ public class CommentModel {
 	private CommentDAO commentDao;
 	private UserModel userModel;
 	public CommentModel(){
-		commentDao=new CommentDAO();
+		commentDao=CommentDAO.getInstance();
 		userModel=new UserModel();
 	}
 	
@@ -52,7 +52,7 @@ public class CommentModel {
 		List<CommentFoodBean> list=new ArrayList<>();
 	
 	try {
-		ResultSet rs=commentDao.getCommentRes(foodid, numofComment);
+		ResultSet rs=commentDao.getCommentFood(foodid, numofComment);
 		
 		if(rs!=null){
 			while(rs.next()){

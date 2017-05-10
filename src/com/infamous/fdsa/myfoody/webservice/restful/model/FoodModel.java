@@ -10,6 +10,7 @@ import java.util.List;
 import com.infamous.fdsa.myfoody.webservice.restful.AppConfig;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.CommentFoodBean;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.FoodBean;
+import com.infamous.fdsa.myfoody.webservice.restful.bean.UserBean;
 import com.infamous.fdsa.myfoody.webservice.restful.dao.FoodDAO;
 
 public class FoodModel {
@@ -23,10 +24,12 @@ public class FoodModel {
 	
 	private FoodDAO foodDao;
 	private CommentModel commentModel;
-	
+	private UserModel userModel;
 	public FoodModel() {
-		foodDao = new FoodDAO();
+		foodDao = FoodDAO.getInstance();
 		commentModel=new CommentModel();
+		userModel=new UserModel();
+		
 	}
 
 	public List<FoodBean> getListRestaurant(String provinceID,String districtID,
@@ -54,6 +57,12 @@ public class FoodModel {
 					
 					List<CommentFoodBean> comments=commentModel.getCommentFood(id, DEFAULT_NUM_COMMENT);
 					
+					if(comments==null ||comments.size()<=0){
+						comments=new ArrayList<>();
+						UserBean user=userModel.getUserByID("admin@gmail.com");
+						CommentFoodBean comment=new CommentFoodBean(res_id, user, id, "Thêm bởi admin");
+						comments.add(comment);
+					}
 					food.setListComment(comments);
 
 					list.add(food);

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
@@ -31,6 +32,26 @@ public class MyFunction {
 			e.printStackTrace();
 		}
 		plaintext = "myf00dY_" + plaintext + "104395301";
+
+		messageDigest.update(plaintext.getBytes());
+
+		byte byteData[] = messageDigest.digest();
+
+		StringBuffer ciphertext = new StringBuffer();
+		for (int i = 0; i < byteData.length; i++)
+			ciphertext.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+
+		return ciphertext.toString();
+	}
+	public static String generateSecretCode() {
+		String plaintext="s3Cret";
+		MessageDigest messageDigest = null;
+		try {
+			messageDigest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		plaintext = "myf00dY_" + plaintext + UUID.randomUUID().toString();
 
 		messageDigest.update(plaintext.getBytes());
 
