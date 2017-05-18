@@ -21,5 +21,9 @@ public class PositionBean {
 	public void set_long(double _long) {
 		this._long = _long;
 	}
+	@Override
+	public String toString() {
+		return "PositionBean [_lat=" + _lat + ", _long=" + _long + "]";
+	}
 	
 }

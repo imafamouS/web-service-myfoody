@@ -237,8 +237,7 @@ public class RestaurantBean {
 		return "RestaurantBean [id=" + id + ", title=" + title + ", address=" + address + ", avg_rating=" + avg_rating
 				+ ", phone=" + phone + ", total_review=" + total_review + ", id_province=" + id_province
 				+ ", id_district=" + id_district + ", id_street=" + id_street + ", where_type=" + where_type
-				+ ", res_type=" + res_type + ", photo=" + photo + ", listComment=" + listComment + ", listImage="
-				+ listImage + ", position=" + position + ", openTime=" + openTime + ", closeTime=" + closeTime
+				+ ", res_type=" + res_type + ", position=" + position + ", openTime=" + openTime + ", closeTime=" + closeTime
 				+ ", minCash=" + minCash + ", maxCash=" + maxCash + "]";
 	}
 

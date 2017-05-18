@@ -37,5 +37,25 @@ public class FoodDAO extends BaseDAO {
 
 		return pre.executeQuery();
 	}
+	public ResultSet getListFoodByOffset(String provinceID, String districtID, String streetID, String resType,int page,int num_record)
+			throws SQLException {
+		String sql = "call sp_getFoodByOffset(?,?,?,?,?,?)";
+
+		PreparedStatement pre = null;
+		try {
+			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);
+			pre.setString(1, provinceID);
+			pre.setString(2, districtID);
+			pre.setString(3, streetID);
+			pre.setString(4, resType);
+			pre.setInt(5, page);
+			pre.setInt(6, num_record);
+		} catch (SQLException e) {
+			System.out.print("FAIL to get");
+		}
+
+		return pre.executeQuery();
+	}
+	
 
 }

@@ -137,6 +137,17 @@ public class UploadImageController {
 		}
 		return flag;
 	}
+	public void deleteExistImage(String folder,String name){
+		File file=new File(AppConfig.LOCATION_DATA_LOCAL+"img/"+folder+"/"+name+".png");
+		if(file.exists()){
+			file.delete();
+		}else{
+			File filee=new File(AppConfig.LOCATION_DATA_LOCAL+"img/"+folder+"/"+name+".jpg");
+			if(filee.exists()){
+				filee.delete();
+			}
+		}
+	}
 	
 	
 

@@ -33,5 +33,32 @@ public class MoreImageRestaurantDAO extends BaseDAO {
 
 		return pre.executeQuery();
 	}
+	public int insertMoreImageResturant(String id,String resid,String photo) throws SQLException{
+		String sql="INSERT INTO tbl_morephoto_res(id,res_id,photo) value(?,?,?)";
+		PreparedStatement pre = null;
+		try {
+			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);
+			pre.setString(1, id);
+			pre.setString(2, resid);
+			pre.setString(3, photo);
+		} catch (SQLException e) {
+			System.out.print("FAIL to get");
+		}
+		
+		return pre.executeUpdate();
+
+	}
+	public ResultSet getNewID() throws SQLException{
+		String sql = "select count(*) from tbl_morephoto_res";
+
+		PreparedStatement pre = null;
+		try {
+			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			System.out.print("FAIL to get");
+		}
+
+		return pre.executeQuery();
+	}
 
 }

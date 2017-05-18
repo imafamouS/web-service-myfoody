@@ -44,5 +44,34 @@ public class MenuBarModel {
 		
 		return list;
 	}
-	
+	public String getWhereTypeByResType(String res_type){
+		String result="";
+		try{
+			ResultSet rs=menuBarDAO.getWhereTypeByResType(res_type);
+			if(rs!=null){
+				if(rs.next()){
+					result=rs.getString(1);
+				}
+			}
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public String getResTypeByWhereType(String where_type){
+		String result="";
+		try{
+			ResultSet rs=menuBarDAO.getResTypeByWhereType(where_type);
+			if(rs!=null){
+				if(rs.next()){
+					result=rs.getString(1);
+				}
+			}
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

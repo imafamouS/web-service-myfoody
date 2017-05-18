@@ -39,4 +39,26 @@ public class MenuBarDAO extends BaseDAO {
 
 		return pre.executeQuery();
 	}
+	public ResultSet getWhereTypeByResType(String res_type) throws SQLException{
+		String sql = "select id_type from tbl_wheretype where tbl_wheretype.name_type = (select name_type from tbl_restype where tbl_restype.id_type=?)";
+		PreparedStatement pre = null;
+		try {
+			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);
+			pre.setString(1, res_type);
+		} catch (SQLException e) {
+			System.out.print("FAIL to get");
+		}
+		return pre.executeQuery();
+	}
+	public ResultSet getResTypeByWhereType(String where_type) throws SQLException{
+		String sql = "select id_type from tbl_restype where tbl_restype.name_type = (select name_type from tbl_wheretype where tbl_wheretype.id_type=?)";
+		PreparedStatement pre = null;
+		try {
+			pre = (PreparedStatement) this.databaseHelper.connection.prepareStatement(sql);
+			pre.setString(1, where_type);
+		} catch (SQLException e) {
+			System.out.print("FAIL to get");
+		}
+		return pre.executeQuery();
+	}
 }

@@ -28,7 +28,7 @@ public class MoreImageRestaurantModel {
 					String res_id = rs.getString(2);
 					String photo=imagePath+rs.getString(3);
 					
-					
+			
 					MoreImageRestaurantBean moreImage=new MoreImageRestaurantBean(id, res_id,photo);
 
 					list.add(moreImage);
@@ -40,5 +40,28 @@ public class MoreImageRestaurantModel {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public int insertMoreImage(String id,String resid,String photo) throws SQLException{
+		return this.moreImageRestaurantDAO.insertMoreImageResturant(id, resid, photo);
+	}
+	public String getNewID(){
+		String result="";
+		try{
+			ResultSet rs=moreImageRestaurantDAO.getNewID();
+			if(rs!=null){
+				if(rs.next()){
+					result=rs.getString(1);
+				}
+			}
+			result=(Integer.parseInt(result)+1)+"";
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public static void main(String[] args) throws SQLException{
+		MoreImageRestaurantModel ss=new MoreImageRestaurantModel();
+		System.out.println(ss.insertMoreImage("1", "1", "photo"));
 	}
 }

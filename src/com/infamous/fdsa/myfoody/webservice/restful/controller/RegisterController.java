@@ -1,6 +1,5 @@
 package com.infamous.fdsa.myfoody.webservice.restful.controller;
 
-import java.io.File;
 import java.io.InputStream;
 import java.sql.SQLException;
 
@@ -15,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.infamous.fdsa.myfoody.webservice.restful.AppConfig;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.UserBean;
 import com.infamous.fdsa.myfoody.webservice.restful.model.UserModel;
 import com.infamous.fdsa.myfoody.webservice.restful.util.MyFunction;
@@ -146,6 +144,7 @@ public class RegisterController {
 	public String sayPlainTextHello(InputStream incomingData,@QueryParam("token") String token) throws Exception {
 
 		JsonObject jsonObject = MyFunction.parseStream2Json(incomingData);
+		UploadImageController uploadImageController = UploadImageController.getInstanse();
 
 		String userid = jsonObject.get("userid").toString().replaceAll("\"", "");
 		String id = jsonObject.get("id").toString().replaceAll("\"", "");
@@ -156,11 +155,8 @@ public class RegisterController {
 		// Save to database
 		UserModel userModel = new UserModel();
 		String nameAvatar=userModel.getimage(userid, "avatar", token);
-		deleteExistImage("avatar",nameAvatar);
+		uploadImageController.deleteExistImage("avatar",nameAvatar);
 	
-
-		UploadImageController uploadImageController = UploadImageController.getInstanse();
-
 		JsonObject output = new JsonObject();
 
 		if (uploadImageController.uploadImage_Local(id, imgBase64, folder)
@@ -182,6 +178,7 @@ public class RegisterController {
 	public String changecover(InputStream incomingData,@QueryParam("token") String token) throws Exception {
 
 		JsonObject jsonObject = MyFunction.parseStream2Json(incomingData);
+		UploadImageController uploadImageController = UploadImageController.getInstanse();
 
 		String userid = jsonObject.get("userid").toString().replaceAll("\"", "");
 		String id = jsonObject.get("id").toString().replaceAll("\"", "");
@@ -192,9 +189,8 @@ public class RegisterController {
 		// Save to database
 		UserModel userModel = new UserModel();
 		String namecover=userModel.getimage(userid, "cover", token);
-		deleteExistImage("cover",namecover);
+		uploadImageController.deleteExistImage("cover",namecover);
 
-		UploadImageController uploadImageController = UploadImageController.getInstanse();
 
 		JsonObject output = new JsonObject();
 
@@ -210,15 +206,5 @@ public class RegisterController {
 		return output.toString();
 	}
 	
-	private void deleteExistImage(String folder,String name){
-		File file=new File(AppConfig.LOCATION_DATA_LOCAL+"img/"+folder+"/"+name+".png");
-		if(file.exists()){
-			file.delete();
-		}else{
-			File filee=new File(AppConfig.LOCATION_DATA_LOCAL+"img/"+folder+"/"+name+".jpg");
-			if(filee.exists()){
-				filee.delete();
-			}
-		}
-	}
+
 }
