@@ -1,5 +1,7 @@
 package com.infamous.fdsa.myfoody.webservice.restful;
 
+import com.infamous.fdsa.myfoody.webservice.restful.bean.PositionBean;
+
 public class AppConfig {
 	/**
 	 * Giá trị của requestcode khi muốn lấy danh mục loại của Fragment Ăn gì
@@ -30,4 +32,18 @@ public class AppConfig {
 	public static final String LOCATION_DATA_LOCAL = "/Users/apple/res/"; // Change
 
 	public static final int LIMIT_RECORD = 5;
+	
+	private static PositionBean MYLOCATION=null;
+
+	public static PositionBean getMYLOCATION() {
+		if(MYLOCATION==null){
+			return new PositionBean(10.851035, 106.772001);
+		}
+		return MYLOCATION;
+	}
+
+	public static void setMYLOCATION(PositionBean mYLOCATION) {
+		MYLOCATION = mYLOCATION;
+	}
+	
 }

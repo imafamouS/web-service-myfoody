@@ -10,14 +10,17 @@ import java.util.List;
 import com.infamous.fdsa.myfoody.webservice.restful.AppConfig;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.CommentFoodBean;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.FoodBean;
+import com.infamous.fdsa.myfoody.webservice.restful.bean.PositionBean;
+import com.infamous.fdsa.myfoody.webservice.restful.bean.RestaurantBean;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.UserBean;
 import com.infamous.fdsa.myfoody.webservice.restful.dao.FoodDAO;
+import com.infamous.fdsa.myfoody.webservice.restful.util.LocatorUtil;
 
 public class FoodModel {
 
 	public static final String SORT_MOSTVIEW = "xemnhieu";
 	public static final String SORT_POPULAR = "phobien";
-	
+	public static final String SORT_NEARBY = "ganday";
 	public static final int DEFAULT_NUM_COMMENT=1;
 	
 	String imagePath=AppConfig.IMAGE_PATH_FOOD_LOCAL;
@@ -54,6 +57,7 @@ public class FoodModel {
 					
 					FoodBean food=new FoodBean(id, title, res_id, name_res, address_res, photo);
 					food.setTotal_review(total_review);
+					food.setPosition(new PositionBean(rs.getDouble(12),rs.getDouble(13)));
 					
 					List<CommentFoodBean> comments=commentModel.getCommentFood(id, DEFAULT_NUM_COMMENT);
 					
@@ -85,6 +89,15 @@ public class FoodModel {
 					}
 
 				}));
+			}else if(sortType.equals(SORT_NEARBY)){
+				List<FoodBean> newList=new ArrayList<>();
+				for (FoodBean foodBean : list) {
+					double distance=LocatorUtil.calculateDistance(foodBean.getPosition(),AppConfig.getMYLOCATION());
+					if(distance>=0 && distance<20){
+						newList.add(foodBean);
+					}
+				}
+				list=newList;
 			}
 		}
 		
@@ -116,6 +129,7 @@ public class FoodModel {
 					
 					FoodBean food=new FoodBean(id, title, res_id, name_res, address_res, photo);
 					food.setTotal_review(total_review);
+					food.setPosition(new PositionBean(rs.getDouble(12),rs.getDouble(13)));
 					
 					List<CommentFoodBean> comments=commentModel.getCommentFood(id, DEFAULT_NUM_COMMENT);
 					
@@ -147,6 +161,15 @@ public class FoodModel {
 					}
 
 				}));
+			}else if(sortType.equals(SORT_NEARBY)){
+				List<FoodBean> newList=new ArrayList<>();
+				for (FoodBean foodBean : list) {
+					double distance=LocatorUtil.calculateDistance(foodBean.getPosition(),AppConfig.getMYLOCATION());
+					if(distance>=0 && distance<20){
+						newList.add(foodBean);
+					}
+				}
+				list=newList;
 			}
 		}
 		

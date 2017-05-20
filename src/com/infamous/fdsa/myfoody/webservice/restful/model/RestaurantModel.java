@@ -13,6 +13,7 @@ import com.infamous.fdsa.myfoody.webservice.restful.bean.MoreImageRestaurantBean
 import com.infamous.fdsa.myfoody.webservice.restful.bean.PositionBean;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.RestaurantBean;
 import com.infamous.fdsa.myfoody.webservice.restful.dao.RestaurantDAO;
+import com.infamous.fdsa.myfoody.webservice.restful.util.LocatorUtil;
 
 public class RestaurantModel {
 
@@ -21,8 +22,9 @@ public class RestaurantModel {
 	private MoreImageRestaurantModel moreImageRestaurantModel;
 	private MenuBarModel menuBarModel;
 
-	public static final String SORT_MOSTVIEW = "xemnhieu";
-	public static final String SORT_POPULAR = "phobien";
+	 static final String SORT_MOSTVIEW = "xemnhieu";
+	 static final String SORT_POPULAR = "phobien";
+	 static final String SORT_NEARBY ="ganday";
 
 	public static final int DEFAULT_NUM_COMMENT = 2;
 	public static final int DEFAULT_NUM_PHOTO = 3;
@@ -107,10 +109,23 @@ public class RestaurantModel {
 					}
 
 				}));
+			}else if(sortType.equals(SORT_NEARBY)){
+				List<RestaurantBean> newList=new ArrayList<>();
+				for (RestaurantBean restaurantBean : list) {
+					double distance=LocatorUtil.calculateDistance(restaurantBean.getPosition(),AppConfig.getMYLOCATION());
+					if(distance>=0 && distance<20){
+						newList.add(restaurantBean);
+					}
+				}
+				list=newList;
 			}
 		}
 
 		return list;
+	}
+	public int getCountRestaurant(String provinceID, String districtID, String streetID,
+			String whereType, String sortType){
+		return this.getListRestaurant(provinceID, districtID, streetID, whereType, sortType).size();
 	}
 	public List<RestaurantBean> getListRestaurantByOffset(String provinceID, String districtID, String streetID,
 			String whereType, String sortType,int page,int num_record) {
@@ -121,8 +136,13 @@ public class RestaurantModel {
 			if(page==0){
 				page=1;
 			}
+			ResultSet rs=null;
 			page=(page-1)*num_record;
-			ResultSet rs = restaurantDAO.getListRestaurantByOffset(provinceID, districtID, streetID, whereType, page, num_record);
+			if(sortType.equals(SORT_NEARBY)){
+				rs= restaurantDAO.getListRestaurant(provinceID, districtID, streetID, whereType);
+			}else{
+				rs = restaurantDAO.getListRestaurantByOffset(provinceID, districtID, streetID, whereType, page, num_record);
+			}
 			if (rs != null) {
 				while (rs.next()) {
 					String id = rs.getString(1);
@@ -186,8 +206,19 @@ public class RestaurantModel {
 					}
 
 				}));
+			}else if(sortType.equals(SORT_NEARBY)){
+				List<RestaurantBean> newList=new ArrayList<>();
+				for (RestaurantBean restaurantBean : list) {
+					double distance=LocatorUtil.calculateDistance(restaurantBean.getPosition(),AppConfig.getMYLOCATION());
+					if(distance>=0 && distance<200){
+						newList.add(restaurantBean);
+					}
+				}
+				list=newList;
 			}
 		}
+		
+		System.out.println(list.size()+"fsdafsdafsd"+AppConfig.getMYLOCATION().toString());
 
 		return list;
 	}

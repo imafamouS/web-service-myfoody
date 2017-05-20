@@ -12,6 +12,8 @@ public class FoodBean {
 	private int total_review;
 	private List<CommentFoodBean> listComment;
 	private List<MoreImageRestaurantBean> listImage;
+	private PositionBean position;
+	
 
 	public FoodBean(String id, String title, String res_id, String name_res, String address_res, String photo) {
 		this.id = id;
@@ -92,6 +94,14 @@ public class FoodBean {
 
 	public void setListImage(List<MoreImageRestaurantBean> listImage) {
 		this.listImage = listImage;
+	}
+
+	public PositionBean getPosition() {
+		return position;
+	}
+
+	public void setPosition(PositionBean position) {
+		this.position = position;
 	}
 	
 	

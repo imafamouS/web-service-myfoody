@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.infamous.fdsa.myfoody.webservice.restful.AppConfig;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.FoodBean;
+import com.infamous.fdsa.myfoody.webservice.restful.bean.PositionBean;
 import com.infamous.fdsa.myfoody.webservice.restful.model.FoodModel;
 import com.infamous.fdsa.myfoody.webservice.restful.util.MyFunction;
 import com.infamous.fdsa.myfoody.webservice.restful.util.UploadImageController;
@@ -30,12 +31,17 @@ public class FoodController {
 	@Produces("application/json")
 	public String getmenubar(@QueryParam("provinceid") String provinceid, @QueryParam("districtid") String districtid,
 			@QueryParam("streetid") String streetid, @DefaultValue("l0") @QueryParam("restype") String restype,
-			@QueryParam("sort") String sorttype, @QueryParam("page") String page) {
+			@QueryParam("sort") String sorttype, @QueryParam("page") String page,
+			@DefaultValue("-1") @QueryParam("lat") String lat,
+			@DefaultValue("-1") @QueryParam("long") String lng) {
 
 		JsonObject object = new JsonObject();
 		try {
 			FoodModel model = new FoodModel();
 			List<FoodBean> list = new ArrayList<>();
+			if(sorttype.equals("ganday") && !lat.equals("-1") && !lng.equals("-1")){
+				AppConfig.setMYLOCATION(new PositionBean(Double.parseDouble(lat), Double.parseDouble(lng)));
+			}
 			if (page == null || page.length() == 0) {
 				list = model.getListFood(provinceid, districtid, streetid, restype, sorttype);
 			} else {

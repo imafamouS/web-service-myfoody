@@ -20,6 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.infamous.fdsa.myfoody.webservice.restful.AppConfig;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.MoreImageRestaurantBean;
+import com.infamous.fdsa.myfoody.webservice.restful.bean.PositionBean;
 import com.infamous.fdsa.myfoody.webservice.restful.bean.RestaurantBean;
 import com.infamous.fdsa.myfoody.webservice.restful.model.MoreImageRestaurantModel;
 import com.infamous.fdsa.myfoody.webservice.restful.model.RestaurantModel;
@@ -34,13 +35,17 @@ public class RestaurantController {
 	@Produces("application/json")
 	public String getmenubar(@QueryParam("provinceid") String provinceid, @QueryParam("districtid") String districtid,
 			@QueryParam("streetid") String streetid, @DefaultValue("l0") @QueryParam("wheretype") String wheretype,
-			@DefaultValue("xemnhieu") @QueryParam("sort") String sorttype, @QueryParam("page") String page) {
+			@DefaultValue("xemnhieu") @QueryParam("sort") String sorttype, @QueryParam("page") String page,
+			@DefaultValue("-1") @QueryParam("lat") String lat,
+			@DefaultValue("-1") @QueryParam("long") String lng) {
 
 		JsonObject object = new JsonObject();
 		try {
 			RestaurantModel model = new RestaurantModel();
-			System.out.println("Controller:" + page);
 			List<RestaurantBean> list=new ArrayList<>();
+			if(sorttype.equals("ganday") && !lat.equals("-1") && !lng.equals("-1")){
+				AppConfig.setMYLOCATION(new PositionBean(Double.parseDouble(lat), Double.parseDouble(lng)));
+			}
 			if(page==null ||page.length()<=0){
 				list = model.getListRestaurant(provinceid, districtid, streetid, wheretype, sorttype);
 			}else{
@@ -60,6 +65,38 @@ public class RestaurantController {
 				object.addProperty("success", false);
 				object.addProperty("data", "Not found");
 			}
+
+		}
+
+		catch (Exception e) {
+			e.getMessage();
+			System.out.println("Exception Error4444"); // Console
+			object.addProperty("success", false);
+			object.addProperty("data", "Not found");
+		}
+		return object.toString();
+	}
+	@GET
+	@Path("/restaurant/count")
+	@Produces("application/json")
+	public String getCountRestaurant(@QueryParam("provinceid") String provinceid, @QueryParam("districtid") String districtid,
+			@QueryParam("streetid") String streetid, @DefaultValue("l0") @QueryParam("wheretype") String wheretype,
+			@DefaultValue("xemnhieu") @QueryParam("sort") String sorttype,
+			@DefaultValue("-1") @QueryParam("lat") String lat,
+			@DefaultValue("-1") @QueryParam("long") String lng) {
+
+		JsonObject object = new JsonObject();
+		try {
+			if(sorttype.equals("ganday") && !lat.equals("-1") && !lng.equals("-1")){
+				AppConfig.setMYLOCATION(new PositionBean(Double.parseDouble(lat), Double.parseDouble(lng)));
+			}
+			RestaurantModel model = new RestaurantModel();
+			int list=model.getCountRestaurant(provinceid, districtid, streetid, wheretype, sorttype);
+			
+			
+			object.addProperty("success", true);
+			object.addProperty("data", list);
+			
 
 		}
 
